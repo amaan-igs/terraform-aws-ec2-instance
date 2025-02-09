@@ -1,8 +1,53 @@
-# sudo-terraform-ec2-instance
-A foundational template for creating reusable Terraform EC2 modules with SUDO best practices, pre-configured files, and workflows.
+# Terraform EC2 Instance Module
+
+This module creates an EC2 instance in AWS with configurable options for AMI, instance type, security groups, and more. It follows SUDO's Terraform standards and best practices for reusable, secure, and maintainable infrastructure as code.
+
+## Usage
+
+```hcl
+module "ec2_instance" {
+  source = "git::https://github.com/----"
+
+  ami_id             = "ami-0c55b159cbfafe1f0"
+  instance_type      = "t2.micro"
+  subnet_id          = "subnet-0123456789abcdef0"
+  security_group_ids = ["sg-0123456789abcdef0"]
+  instance_name      = "example-instance"
+  tags = {
+    Environment = "dev"
+  }
+}
+```
+
+## Inputs
+
+| Name                | Description                                     | Type          | Default   | Required |
+|---------------------|---------------------------------|--------------|----------|----------|
+| `ami_id`           | The AMI ID to use for the EC2 instance.        | `string`      | -        | Yes      |
+| `instance_type`    | The type of instance to start.                 | `string`      | `t2.micro` | No      |
+| `subnet_id`        | The VPC Subnet ID to launch the instance in.   | `string`      | -        | Yes      |
+| `security_group_ids` | A list of security group IDs to associate.  | `list(string)` | -        | Yes      |
+| `key_name`         | The key name of the Key Pair to use.           | `string`      | `""`     | No       |
+| `instance_name`    | The name tag for the EC2 instance.             | `string`      | -        | Yes      |
+| `root_volume_size` | The size of the root volume in gigabytes.      | `number`      | `8`      | No       |
+| `root_volume_type` | The type of the root volume (e.g., gp2, gp3).  | `string`      | `gp2`    | No       |
+| `tags`            | A map of tags to assign to the instance.        | `map(string)` | `{}`     | No       |
+
+---
+
+## Outputs
+
+| Name         | Description                                  |
+|-------------|--------------------------------|
+| `instance_id` | The ID of the EC2 instance.  |
+| `public_ip`   | The public IP address of the instance.  |
+| `private_ip`  | The private IP address of the instance.  |
+| `instance_arn` | The ARN of the EC2 instance. |
+
+## File Structure Overview 
 
 ```plaintext
-sudo-terraform-module-template/
+sudo-terraform-ec2-instance/
 ├── .github/
 │   └── workflows/
 │       └── main.yml           # CI/CD workflow for linting and testing Terraform configurations
