@@ -1,5 +1,5 @@
-# sudo-terraform-module-template
-A foundational template for creating reusable Terraform modules with best practices, pre-configured files, and workflows.
+# sudo-terraform-ec2-instance
+A foundational template for creating reusable Terraform EC2 modules with SUDO best practices, pre-configured files, and workflows.
 
 ```plaintext
 sudo-terraform-module-template/
