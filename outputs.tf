@@ -17,3 +17,8 @@ output "instance_arn" {
   description = "The ARN of the EC2 instance."
   value       = aws_instance.ec2_instance.arn
 }
+
+output "iam_instance_profile" {
+  description = "The IAM instance profile attached to the EC2 instance."
+  value       = aws_instance.ec2_instance.iam_instance_profile
+}
