@@ -22,3 +22,27 @@ output "iam_instance_profile" {
   description = "The IAM instance profile attached to the EC2 instance."
   value       = aws_instance.ec2_instance.iam_instance_profile
 }
+
+output "instance_name" {
+  value = aws_instance.ec2_instance.tags["Name"]
+}
+
+output "instance_type" {
+  value = aws_instance.ec2_instance.instance_type
+}
+
+output "key_name" {
+  value = aws_instance.ec2_instance.key_name
+}
+
+output "root_volume_size" {
+  value = aws_instance.ec2_instance.root_block_device[0].volume_size
+}
+
+output "ebs_volumes" {
+  value = aws_instance.ec2_instance.ebs_block_device
+}
+
+output "tags" {
+  value = aws_instance.ec2_instance.tags
+}
