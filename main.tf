@@ -6,9 +6,12 @@ resource "aws_instance" "ec2_instance" {
   key_name               = var.key_name # Optional
   iam_instance_profile   = var.iam_instance_profile != "" ? var.iam_instance_profile : null # Optional
   tags                   = merge(var.tags, { Name = var.instance_name }) # Required (instance_name), Optional (tags)
+  monitoring = true #CKV_AWS_126
+  ebs_optimized = true #CKV_AWS_135
 
   # Root volume configuration
   root_block_device {
+    device_name = ebs_block_device.value.device_name
     volume_size = var.root_volume_size # Optional (default: 8)
     volume_type = var.root_volume_type # Optional (default: gp2)
     encrypted   = var.root_volume_encryption # Optional (default: true)
