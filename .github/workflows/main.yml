@@ -1,30 +1,36 @@
 on:
   push:
-    branches:
-    - main
+    branches: [ "main", "master" ]
   pull_request:
-    branches:
-      - main
+    branches: [ "main", "master" ]
     types: [opened, synchronize]
+  workflow_dispatch:
 
 name: Terraform pipeline
+
+permissions:
+  contents: read  # Only read access to repo contents
+  id-token: write # Grant write permission only if OIDC is used
 
 jobs:
   checkov-job:
     runs-on: ubuntu-latest
     name: checkov-action
+    permissions:
+      contents: read  # Only read access to repository contents
+      actions: read   # Only read access to GitHub Actions
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
 
       - name: Run Checkov action
         id: checkov
-        uses: bridgecrewio/checkov-action@master
+        uses: bridgecrewio/checkov-action@v12
         with:
-          directory: ./
-          quiet: true # optional: display only failed checks
-          soft_fail: false # optional: do not return an error code if there are failed checks
-          framework: terraform # optional: run only on a specific infrastructure {cloudformation,terraform,kubernetes,all}
-          output_format: json # optional: the output format, one of: cli, json, junitxml, github_failed_only
-          download_external_modules: true # optional: download external terraform modules from public git repositories and terraform registry
-          log_level: DEBUG # optional: set log level. Default WARNIN
+          directory: ./ 
+          quiet: false
+          soft_fail: false
+          framework: terraform
+          output_format: cli
+          download_external_modules: true
+          log_level: DEBUG
