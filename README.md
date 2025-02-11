@@ -6,43 +6,68 @@ This module creates an EC2 instance in AWS with configurable options for AMI, in
 
 ```hcl
 module "ec2_instance" {
-  source = "git::https://github.com/----"
+  source = "git::https://github.com/amaan-igs/terraform-aws-ec2-instance.git"
 
   ami_id             = "ami-0c55b159cbfafe1f0"
   instance_type      = "t2.micro"
   subnet_id          = "subnet-0123456789abcdef0"
   security_group_ids = ["sg-0123456789abcdef0"]
   instance_name      = "example-instance"
+  iam_instance_profile = "example-instance-profile" # Provide a valid IAM instance profile
+  root_volume_encryption = true
+  enable_imdsv2      = true
+
+  ebs_volumes = [
+    {
+      device_name = "/dev/xvdf"
+      volume_size = 20
+      volume_type = "gp2"
+      encrypted   = true
+    }
+  ]
+
   tags = {
     Environment = "dev"
+    Project     = "example-project"
   }
 }
 ```
 
 ## Inputs
 
-| Name                | Description                                     | Type          | Default   | Required |
-|---------------------|---------------------------------|--------------|----------|----------|
-| `ami_id`           | The AMI ID to use for the EC2 instance.        | `string`      | -        | Yes      |
-| `instance_type`    | The type of instance to start.                 | `string`      | `t2.micro` | No      |
-| `subnet_id`        | The VPC Subnet ID to launch the instance in.   | `string`      | -        | Yes      |
-| `security_group_ids` | A list of security group IDs to associate.  | `list(string)` | -        | Yes      |
-| `key_name`         | The key name of the Key Pair to use.           | `string`      | `""`     | No       |
-| `instance_name`    | The name tag for the EC2 instance.             | `string`      | -        | Yes      |
-| `root_volume_size` | The size of the root volume in gigabytes.      | `number`      | `8`      | No       |
-| `root_volume_type` | The type of the root volume (e.g., gp2, gp3).  | `string`      | `gp2`    | No       |
-| `tags`            | A map of tags to assign to the instance.        | `map(string)` | `{}`     | No       |
-
+| Name                  | Description                                                  | Type            | Default   | Required |
+|-----------------------|--------------------------------------------------------------|----------------|----------|----------|
+| `ami_id`             | The AMI ID to use for the EC2 instance.                      | `string`        | -        | Yes      |
+| `instance_type`      | The type of instance to start.                               | `string`        | `t2.micro` | No      |
+| `subnet_id`          | The VPC Subnet ID to launch the instance in.                 | `string`        | -        | Yes      |
+| `security_group_ids` | A list of security group IDs to associate with the instance. | `list(string)`  | -        | Yes      |
+| `key_name`           | The key name of the Key Pair to use for the instance.        | `string`        | `""`     | No       |
+| `instance_name`      | The name tag for the EC2 instance.                           | `string`        | -        | Yes      |
+| `root_volume_size`   | The size of the root volume in gigabytes.                    | `number`        | `8`      | No       |
+| `root_volume_type`   | The type of the root volume (e.g., gp2, gp3).                | `string`        | `gp2`    | No       |
+| `root_volume_encryption` | Enable encryption for the root volume.                   | `bool`          | `true`   | No       |
+| `tags`              | A map of tags to assign to the instance.                      | `map(string)`   | `{}`     | No       |
+| `iam_instance_profile` | The IAM instance profile to attach to the EC2 instance.    | `string`        | `""`     | No       |
+| `ebs_volumes`       | A list of additional EBS volumes to attach to the instance.  | `list(object)`  | `[]`     | No       |
+| `enable_imdsv2`     | Enable IMDSv2 for the EC2 instance.                           | `bool`          | `true`   | No       |
 ---
 
 ## Outputs
 
-| Name         | Description                                  |
-|-------------|--------------------------------|
-| `instance_id` | The ID of the EC2 instance.  |
-| `public_ip`   | The public IP address of the instance.  |
-| `private_ip`  | The private IP address of the instance.  |
-| `instance_arn` | The ARN of the EC2 instance. |
+| Name                   | Description                                          | Value                                       |
+|------------------------|------------------------------------------------------|---------------------------------------------|
+| `instance_id`         | The ID of the EC2 instance.                          | `aws_instance.ec2_instance.id`             |
+| `public_ip`          | The public IP address of the EC2 instance.           | `aws_instance.ec2_instance.public_ip`      |
+| `private_ip`         | The private IP address of the EC2 instance.          | `aws_instance.ec2_instance.private_ip`     |
+| `instance_arn`       | The ARN of the EC2 instance.                         | `aws_instance.ec2_instance.arn`            |
+| `iam_instance_profile` | The IAM instance profile attached to the instance. | `aws_instance.ec2_instance.iam_instance_profile` |
+| `instance_name`      | The name tag assigned to the EC2 instance.           | `aws_instance.ec2_instance.tags["Name"]`   |
+| `instance_type`      | The type of the EC2 instance.                        | `aws_instance.ec2_instance.instance_type`  |
+| `key_name`          | The key pair name assigned to the EC2 instance.      | `aws_instance.ec2_instance.key_name`       |
+| `root_volume_size`  | The size of the root volume in GB.                    | `aws_instance.ec2_instance.root_block_device[0].volume_size` |
+| `ebs_volumes`       | The additional EBS volumes attached to the instance.  | `aws_instance.ec2_instance.ebs_block_device` |
+| `tags`              | The tags associated with the EC2 instance.            | `aws_instance.ec2_instance.tags`           |
+---
 
 ## File Structure Overview 
 
