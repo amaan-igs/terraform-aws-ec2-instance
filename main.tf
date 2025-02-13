@@ -17,14 +17,13 @@ resource "aws_instance" "ec2_instance" {
     encrypted   = var.root_volume_encryption
   }
 
-
   dynamic "ebs_block_device" {
     for_each = var.ebs_volumes
     content {
-      device_name = each.value.device_name
-      volume_size = each.value.volume_size
-      volume_type = each.value.volume_type
-      encrypted   = each.value.encrypted
+      device_name = ebs_block_device.value.device_name
+      volume_size = ebs_block_device.value.volume_size
+      volume_type = ebs_block_device.value.volume_type
+      encrypted   = ebs_block_device.value.encrypted
     }
   }
 
