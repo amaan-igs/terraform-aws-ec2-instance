@@ -11,7 +11,6 @@ resource "aws_instance" "ec2_instance" {
 
   # Root volume configuration
   root_block_device {
-    device_name = "/dev/sda1" # Change this to the correct root volume device name
     volume_size = var.root_volume_size
     volume_type = var.root_volume_type
     encrypted   = var.root_volume_encryption
