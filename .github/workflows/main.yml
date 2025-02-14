@@ -8,13 +8,17 @@ on:
 
 name: Terraform pipeline
 
+permissions:
+  contents: read  # Only read access to repo contents
+  id-token: write # Grant write permission only if OIDC is used
+
 jobs:
   checkov-job:
     runs-on: ubuntu-latest
     name: checkov-action
     permissions:
-      contents: read # Only read access to repository contents
-      actions: read  # Only read access to GitHub Actions
+      contents: read  # Only read access to repository contents
+      actions: read   # Only read access to GitHub Actions
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -23,7 +27,7 @@ jobs:
         id: checkov
         uses: bridgecrewio/checkov-action@v12
         with:
-          directory: ./
+          directory: ./ 
           quiet: false
           soft_fail: false
           framework: terraform
