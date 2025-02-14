@@ -1,4 +1,8 @@
+[![Terraform pipeline](https://github.com/amaan-igs/terraform-aws-ec2-instance/actions/workflows/main.yml/badge.svg)](https://github.com/amaan-igs/terraform-aws-ec2-instance/actions/workflows/main.yml)
+
 # Terraform EC2 Instance Module
+
+<img src="https://github.com/user-attachments/assets/a09f3eff-3e08-4a3c-b490-71117a40080b" width="460" height="100"/><br>
 
 This module creates an EC2 instance in AWS with configurable options for AMI, instance type, security groups, and more. It follows SUDO's Terraform standards and best practices for reusable, secure, and maintainable infrastructure as code.
 
