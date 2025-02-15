@@ -1,4 +1,8 @@
+[![Terraform pipeline](https://github.com/amaan-igs/terraform-aws-ec2-instance/actions/workflows/main.yml/badge.svg)](https://github.com/amaan-igs/terraform-aws-ec2-instance/actions/workflows/main.yml)
+
 # Terraform EC2 Instance Module
+
+<img src="https://github.com/user-attachments/assets/a09f3eff-3e08-4a3c-b490-71117a40080b" width="460" height="100"/><br>
 
 This module creates an EC2 instance in AWS with configurable options for AMI, instance type, security groups, and more. It follows SUDO's Terraform standards and best practices for reusable, secure, and maintainable infrastructure as code.
 
@@ -8,27 +12,30 @@ This module creates an EC2 instance in AWS with configurable options for AMI, in
 module "ec2_instance" {
   source = "git::https://github.com/amaan-igs/terraform-aws-ec2-instance.git"
 
-  ami_id             = "ami-0c55b159cbfafe1f0"
-  instance_type      = "t2.micro"
-  subnet_id          = "subnet-0123456789abcdef0"
-  security_group_ids = ["sg-0123456789abcdef0"]
-  instance_name      = "example-instance"
-  iam_instance_profile = "example-instance-profile" # Provide a valid IAM instance profile
+  ami_id                = "ami-00bb6a80f01f03502"
+  instance_type         = "t2.micro"
+  subnet_id             = "subnet-0194c32a03d44fdbd"
+  security_group_ids    = ["sg-07ea31bd8b8dab9f1"]
+  instance_name         = "prod-sample"
+  key_name              = "sample-key" # Ensure the key exists in AWS
+  iam_instance_profile  = "sample-instance-profile"
+  root_volume_size      = 10
+  root_volume_type      = "gp3"
   root_volume_encryption = true
-  enable_imdsv2      = true
+  enable_imdsv2         = true
 
   ebs_volumes = [
     {
       device_name = "/dev/xvdf"
-      volume_size = 20
-      volume_type = "gp2"
+      volume_size = 30
+      volume_type = "gp3"
       encrypted   = true
     }
   ]
 
   tags = {
-    Environment = "dev"
-    Project     = "example-project"
+    Environment = "production"
+    Project     = "sample-project"
   }
 }
 ```
