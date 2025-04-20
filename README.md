@@ -150,3 +150,10 @@ sudo-terraform-ec2-instance/
 ├── variables.tf               # Definitions of module input variables
 └── versions.tf                # Terraform and provider version constraints
 ```
+## Authors
+
+Module is maintained by [Amaan Ul Haq Siddiqui](https://github.com/amaan-igs) & [Hameedullah Khan](https://github.com/hameedullah).
+
+## License
+
+Apache 2 Licensed. See [LICENSE](https://github.com/sudo-terraform-aws-modules/terraform-aws-ec2-instance/blob/main/LICENSE) for full details.
